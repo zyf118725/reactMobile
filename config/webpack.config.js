@@ -27,6 +27,8 @@ const ForkTsCheckerWebpackPlugin =
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
+const px2rem = require('postcss-px2rem');
+const pxtorem = require('postcss-pxtorem');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -149,6 +151,8 @@ module.exports = function (webpackEnv) {
                   // so that it honors browserslist config in package.json
                   // which in turn let's users customize the target behavior as per their needs.
                   'postcss-normalize',
+                  // px2rem({ remUnit: 75 })
+                  pxtorem({ rootValue: 37.5, unitPrecision: 5, propList: ['*'] })
                 ]
               : [
                   'tailwindcss',
@@ -162,6 +166,8 @@ module.exports = function (webpackEnv) {
                       stage: 3,
                     },
                   ],
+                  // px2rem({ remUnit: 75 }),
+                  pxtorem({ rootValue: 37.5, unitPrecision: 5, propList: ['*'] })
                 ],
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
